@@ -2,7 +2,9 @@ package mdas
 
 
 case class TobaccoMachineGroup(tobaccoMachines: Seq[TobaccoMachine]) {
-  def fillStocks(): TobaccoMachineGroup = copy(tobaccoMachines = tobaccoMachines.map(_.fillStock()))
+  def addMachine(tobaccoMachine: TobaccoMachine): TobaccoMachineGroup = copy(tobaccoMachines = tobaccoMachines :+ tobaccoMachine)
+
+  def removeMachine(tobaccoMachine: TobaccoMachine): TobaccoMachineGroup = copy(tobaccoMachines = tobaccoMachines.filter(_ != tobaccoMachine))
 
   def calculateEarningsOfTheDayOfAllMachines(): Float = tobaccoMachines.map(_.earnings).sum
 
@@ -10,16 +12,18 @@ case class TobaccoMachineGroup(tobaccoMachines: Seq[TobaccoMachine]) {
 
   private def getMachine(machineName: String): Option[TobaccoMachine] = tobaccoMachines.find(_.name == machineName)
 
+  def fillStocks(): TobaccoMachineGroup = copy(tobaccoMachines = tobaccoMachines.map(_.fillStock()))
+
   def buyProduct(machineName: String, productName: String): (TobaccoMachineGroup, Option[TobaccoProduct]) = getMachine(machineName) match {
     case None => (copy(), None)
     case Some(machine: TobaccoMachine) => {
       val (tobaccoMachine: TobaccoMachine, tobaccoProduct: Option[TobaccoProduct]) = machine.buyProduct(productName)
-      (copy(tobaccoMachines = substituteMachine(tobaccoMachine)), tobaccoProduct)
+      (copy(tobaccoMachines = substituteMachine(machine, tobaccoMachine)), tobaccoProduct)
     }
   }
 
-  private def substituteMachine(machine: TobaccoMachine) = {
-    val indexOfStock = tobaccoMachines.indexOf(machine)
-    tobaccoMachines.patch(indexOfStock, List(machine), 1)
+  private def substituteMachine(originalMachine: TobaccoMachine, newMachine: TobaccoMachine) = {
+    val indexOfStock = tobaccoMachines.indexOf(originalMachine)
+    tobaccoMachines.patch(indexOfStock, List(newMachine), 1)
   }
 }

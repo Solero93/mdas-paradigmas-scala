@@ -8,14 +8,14 @@ case class TobaccoMachineStock(productStocks: Seq[TobaccoProductStock]) {
     case None => (copy(), None)
     case Some(productStock: TobaccoProductStock) => {
       val (newProductStock: TobaccoProductStock, product: Option[TobaccoProduct]) = productStock.buy()
-      (copy(productStocks = substituteProductStock(newProductStock)), product)
+      (copy(productStocks = substituteProductStock(productStock, newProductStock)), product)
     }
   }
 
   private def getProductStock(productName: String): Option[TobaccoProductStock] = productStocks.find(_.name == productName)
 
-  private def substituteProductStock(productStock: TobaccoProductStock) = {
-    val indexOfStock = productStocks.indexOf(productStock)
-    productStocks.patch(indexOfStock, List(productStock), 1)
+  private def substituteProductStock(oldProductStock: TobaccoProductStock, newProductStock: TobaccoProductStock) = {
+    val indexOfStock = productStocks.indexOf(oldProductStock)
+    productStocks.patch(indexOfStock, List(newProductStock), 1)
   }
 }

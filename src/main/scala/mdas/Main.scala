@@ -5,24 +5,34 @@ object Main {
     val tobaccoRubio = TobaccoProduct("Tabaco Rubio", 1.50f)
     val purito = TobaccoProduct("Purito", 0.90f)
 
-    val tobaccoRubioList = TobaccoProductStock(tobaccoRubio, 100)
-    val puritoList = TobaccoProductStock(purito, 30)
+    val tobaccoRubioStock = TobaccoProductStock(tobaccoRubio, 100)
+    val puritoStock = TobaccoProductStock(purito, 30)
 
-    val machineStock = TobaccoMachineStock(Seq(tobaccoRubioList, puritoList))
+    val machineStock = TobaccoMachineStock(Seq(tobaccoRubioStock, puritoStock))
 
     val tobaccoMachine = TobaccoMachine("Machine 1", machineStock)
     val tobaccoMachine2 = tobaccoMachine.copy(name = "Machine 2")
     val tobaccoMachine3 = tobaccoMachine.copy(name = "Machine 3")
 
-    val tobaccoMachineGroup = TobaccoMachineGroup(Seq(tobaccoMachine, tobaccoMachine2, tobaccoMachine3))
-    val tobaccoMachineGroup2 = tobaccoMachineGroup.fillStocks()
+    // Para demostrar que las máquinas pueden variar
+    val tobaccoMachineGroup = TobaccoMachineGroup(Seq(tobaccoMachine, tobaccoMachine2))
+      .addMachine(tobaccoMachine3)
+      .removeMachine(tobaccoMachine2)
+      .fillStocks()
 
-    val (tobaccoMachineGroup3: TobaccoMachineGroup, product: Option[TobaccoProduct]) =
-      tobaccoMachineGroup2.buyProduct("Machine 1", "Purito")
+    val (machineGroupAfterBuyingPurito: TobaccoMachineGroup, product: Option[TobaccoProduct]) =
+      tobaccoMachineGroup.buyProduct("Machine 1", "Purito")
 
-    println(tobaccoMachineGroup3.calculateEarningsOfTheDayOfAllMachines())
-    println(tobaccoMachineGroup3.calculateEarningsOfTheDayOfMachine("Machine 1"))
-    println(tobaccoMachineGroup3.calculateEarningsOfTheDayOfMachine("Machine 2"))
+    println(s"${product.get} bought from $machineGroupAfterBuyingPurito")
+
+    val (machineGroupAfterBuyingPuritoAndTabacoRubio: TobaccoMachineGroup, product2: Option[TobaccoProduct]) =
+      machineGroupAfterBuyingPurito.buyProduct("Machine 3", "Tabaco Rubio")
+
+    println(s"${product2.get} bought from $machineGroupAfterBuyingPuritoAndTabacoRubio")
+
+    println(machineGroupAfterBuyingPuritoAndTabacoRubio.calculateEarningsOfTheDayOfAllMachines())
+    println(machineGroupAfterBuyingPuritoAndTabacoRubio.calculateEarningsOfTheDayOfMachine("Machine 1"))
+    println(machineGroupAfterBuyingPuritoAndTabacoRubio.calculateEarningsOfTheDayOfMachine("Machine 3"))
   }
 }
 
