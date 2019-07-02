@@ -1,6 +1,9 @@
-package model
+package mdas
+
 
 case class TobaccoMachineStock(productStocks: Seq[TobaccoProductStock]) {
+  def fillStock(): TobaccoMachineStock = copy(productStocks = productStocks.map(_.fill()))
+
   def buyProduct(productName: String): (TobaccoMachineStock, Option[TobaccoProduct]) = getProductStock(productName) match {
     case None => (copy(), None)
     case Some(productStock: TobaccoProductStock) => {

@@ -1,4 +1,5 @@
-package model
+package mdas
+
 
 case class TobaccoProductStock(product: TobaccoProduct, maxUnits: Int, var units: Int = 0) {
   val name: String = product.name

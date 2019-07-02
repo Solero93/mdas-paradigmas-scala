@@ -1,3 +1,3 @@
-package model
+package mdas
 
 case class TobaccoProduct(name: String, price: Float)
