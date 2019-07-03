@@ -1,8 +1,10 @@
 package mdas
 
+import java.util.UUID
+
 
 case class TobaccoProductStock(product: TobaccoProduct, maxUnits: Int, var units: Int = 0) {
-  val name: String = product.name
+  val uuid: UUID = product.uuid
 
   def fill(): TobaccoProductStock = copy(units = maxUnits)
 
