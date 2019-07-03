@@ -2,7 +2,6 @@ package mdas
 
 import java.util.UUID
 
-
 case class TobaccoMachineStock(productStocks: Seq[TobaccoProductStock]) {
   def fillStock(): TobaccoMachineStock = copy(productStocks = productStocks.map(_.fill()))
 

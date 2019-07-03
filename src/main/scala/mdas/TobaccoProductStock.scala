@@ -2,7 +2,6 @@ package mdas
 
 import java.util.UUID
 
-
 case class TobaccoProductStock(product: TobaccoProduct, maxUnits: Int, var units: Int = 0) {
   val uuid: UUID = product.uuid
 

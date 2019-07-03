@@ -3,7 +3,6 @@ package mdas
 import java.util.UUID
 import java.util.UUID.randomUUID
 
-
 case class TobaccoMachine(uuid: UUID = randomUUID(), machineStock: TobaccoMachineStock, earnings: Float = 0.0f) {
   def fillStock(): TobaccoMachine = copy(machineStock = machineStock.fillStock())
 
