@@ -1,4 +1,4 @@
-package mdas
+package mdas.tobaccomachines
 
 import java.util.UUID
 import java.util.UUID.randomUUID
