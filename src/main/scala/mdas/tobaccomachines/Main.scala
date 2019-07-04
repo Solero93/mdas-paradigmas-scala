@@ -2,6 +2,11 @@ package mdas.tobaccomachines
 
 import java.util.UUID.randomUUID
 
+import akka.actor.{ActorSystem, Props}
+import mdas.tobaccomachines.factory.TobaccoRubioFactory
+import mdas.tobaccomachines.messages.CreateTobaccoRequest
+import mdas.tobaccomachines.replenisher.TobaccoReplenisher
+
 object Main {
   def main(args: Array[String]): Unit = {
     val tobaccoRubio = TobaccoProduct(price = 1.50f)
@@ -35,6 +40,11 @@ object Main {
     println(machineGroupAfterBuyingPuritoAndTabacoRubio.calculateEarnings())
     println(machineGroupAfterBuyingPuritoAndTabacoRubio.calculateEarningsOfMachine(tobaccoMachine.uuid))
     println(machineGroupAfterBuyingPuritoAndTabacoRubio.calculateEarningsOfMachine(tobaccoMachine3.uuid))
+
+    val system = ActorSystem("TobaccoFactorySystem")
+    val tobaccoReplenisher = system.actorOf(Props[TobaccoReplenisher], name = "tobaccoReplenisher")
+    val factory = system.actorOf(Props[TobaccoRubioFactory], name = "tobaccoRubioFactory")
+    factory.tell(CreateTobaccoRequest, tobaccoReplenisher)
+    system.terminate()
   }
 }
-
