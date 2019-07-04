@@ -2,9 +2,12 @@ name := "mdas-paradigmas-scala"
 
 version := "0.1"
 
-scalaVersion := "2.13.0"
+scalaVersion := "2.12.6"
 
-resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/"
+lazy val akkaVersion = "2.6.0-M3"
 
-libraryDependencies +=
-  "com.typesafe.akka" %% "akka-actor" % "2.3.8"
+libraryDependencies ++= Seq(
+  "com.typesafe.akka" %% "akka-actor" % akkaVersion,
+  "com.typesafe.akka" %% "akka-testkit" % akkaVersion,
+  "org.scalatest" %% "scalatest" % "3.0.5" % "test"
+)
