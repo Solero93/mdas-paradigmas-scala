@@ -6,7 +6,7 @@ import java.util.UUID.randomUUID
 case class TobaccoMachine(uuid: UUID = randomUUID(), machineStock: TobaccoMachineStock, earnings: Float = 0.0f) extends TobaccoMachineHierarchyNode {
   override def fillStock(): TobaccoMachine = copy(machineStock = machineStock.fillStock())
 
-  def buyProduct(machineUUID: UUID, productUUID: UUID): (TobaccoMachine, Option[TobaccoProduct]) = {
+  override def buyProduct(machineUUID: UUID, productUUID: UUID): (TobaccoMachine, Option[TobaccoProduct]) = {
     if (this.uuid != machineUUID) {
       return (copy(), None)
     }
