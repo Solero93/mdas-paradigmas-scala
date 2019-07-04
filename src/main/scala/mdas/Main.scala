@@ -17,10 +17,10 @@ object Main {
     val tobaccoMachine3 = tobaccoMachine.copy(uuid = randomUUID())
 
     // Para demostrar que las máquinas pueden variar
-    val tobaccoMachineGroup = TobaccoMachineGroup(tobaccoMachines = Seq(tobaccoMachine, tobaccoMachine2))
-      .addMachine(tobaccoMachine3)
-      .removeMachine(tobaccoMachine2)
-      .fillStocks()
+    val tobaccoMachineGroup = TobaccoMachineGroup(children = Seq(tobaccoMachine, tobaccoMachine2))
+      .addChild(tobaccoMachine3)
+      .removeChild(tobaccoMachine2)
+      .fillStock()
 
     val (machineGroupAfterBuyingPurito: TobaccoMachineGroup, product: Option[TobaccoProduct]) =
       tobaccoMachineGroup.buyProduct(tobaccoMachine.uuid, purito.uuid)
@@ -32,9 +32,9 @@ object Main {
 
     println(s"${product2.get} bought from $machineGroupAfterBuyingPuritoAndTabacoRubio")
 
-    println(machineGroupAfterBuyingPuritoAndTabacoRubio.calculateEarningsOfTheDayOfAllMachines())
-    println(machineGroupAfterBuyingPuritoAndTabacoRubio.calculateEarningsOfTheDayOfMachine(tobaccoMachine.uuid))
-    println(machineGroupAfterBuyingPuritoAndTabacoRubio.calculateEarningsOfTheDayOfMachine(tobaccoMachine3.uuid))
+    println(machineGroupAfterBuyingPuritoAndTabacoRubio.calculateEarnings())
+    println(machineGroupAfterBuyingPuritoAndTabacoRubio.calculateEarningsOfMachine(tobaccoMachine.uuid))
+    println(machineGroupAfterBuyingPuritoAndTabacoRubio.calculateEarningsOfMachine(tobaccoMachine3.uuid))
   }
 }
 

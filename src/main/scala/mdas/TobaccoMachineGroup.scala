@@ -3,28 +3,19 @@ package mdas
 import java.util.UUID
 import java.util.UUID.randomUUID
 
-case class TobaccoMachineGroup(uuid: UUID = randomUUID(), tobaccoMachines: Seq[TobaccoMachine]) {
-  def addMachine(tobaccoMachine: TobaccoMachine): TobaccoMachineGroup = copy(tobaccoMachines = tobaccoMachines :+ tobaccoMachine)
+case class TobaccoMachineGroup(uuid: UUID = randomUUID(), children: Seq[TobaccoMachineHierarchyNode]) extends TobaccoMachineHierarchyNode {
+  def addChild(tobaccoMachineHierarchyNode: TobaccoMachineHierarchyNode): TobaccoMachineGroup = copy(children = children :+ tobaccoMachineHierarchyNode)
 
-  def removeMachine(tobaccoMachine: TobaccoMachine): TobaccoMachineGroup = copy(tobaccoMachines = tobaccoMachines.filter(_ != tobaccoMachine))
+  def removeChild(tobaccoMachineHierarchyNode: TobaccoMachineHierarchyNode): TobaccoMachineGroup = copy(children = children.filter(_ != tobaccoMachineHierarchyNode))
 
-  def calculateEarningsOfTheDayOfAllMachines(): Float = tobaccoMachines.map(_.earnings).sum
+  override def fillStock(): TobaccoMachineHierarchyNode = copy(children = children.map(_.fillStock()))
 
-  def calculateEarningsOfTheDayOfMachine(machineUUID: UUID): Float = getMachine(machineUUID).map(_.earnings).sum
-
-  def fillStocks(): TobaccoMachineGroup = copy(tobaccoMachines = tobaccoMachines.map(_.fillStock()))
-
-  def buyProduct(machineUUID: UUID, productUUID: UUID): (TobaccoMachineGroup, Option[TobaccoProduct]) = getMachine(machineUUID) match {
-    case None => (copy(), None)
-    case Some(machine: TobaccoMachine) =>
-      val (tobaccoMachine: TobaccoMachine, tobaccoProduct: Option[TobaccoProduct]) = machine.buyProduct(productUUID)
-      (copy(tobaccoMachines = substituteMachine(machine, tobaccoMachine)), tobaccoProduct)
+  override def buyProduct(machineUUID: UUID, productUUID: UUID): (TobaccoMachineHierarchyNode, Option[TobaccoProduct]) = {
+    val childrenAfterBuyProduct = children.map(_.buyProduct(machineUUID, productUUID))
+    (copy(children = childrenAfterBuyProduct.map(_._1)), childrenAfterBuyProduct.map(_._2).find(_.isDefined).head)
   }
 
-  private def getMachine(machineUUID: UUID): Option[TobaccoMachine] = tobaccoMachines.find(_.uuid == machineUUID)
+  override def calculateEarningsOfMachine(machineUUID: UUID): Float = children.map(_.calculateEarningsOfMachine(machineUUID)).sum
 
-  private def substituteMachine(originalMachine: TobaccoMachine, newMachine: TobaccoMachine) = {
-    val indexOfStock = tobaccoMachines.indexOf(originalMachine)
-    tobaccoMachines.patch(indexOfStock, List(newMachine), 1)
-  }
+  override def calculateEarnings(): Float = children.map(_.calculateEarnings()).sum
 }
