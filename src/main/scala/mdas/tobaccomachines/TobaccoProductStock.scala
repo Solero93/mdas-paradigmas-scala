@@ -2,7 +2,7 @@ package mdas.tobaccomachines
 
 import java.util.UUID
 
-case class TobaccoProductStock(product: TobaccoProduct, maxUnits: Int, var units: Int = 0) {
+case class TobaccoProductStock(product: TobaccoProduct, maxUnits: Int, units: Int = 0) {
   val uuid: UUID = product.uuid
 
   def fill(): TobaccoProductStock = copy(units = maxUnits)
