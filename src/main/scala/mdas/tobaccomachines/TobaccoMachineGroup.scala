@@ -12,7 +12,12 @@ case class TobaccoMachineGroup(uuid: UUID = randomUUID(), children: Seq[TobaccoM
 
   override def buyProduct(machineUUID: UUID, productUUID: UUID): (TobaccoMachineHierarchyNode, Option[TobaccoProduct]) = {
     val childrenAfterBuyProduct = children.map(_.buyProduct(machineUUID, productUUID))
-    (copy(children = childrenAfterBuyProduct.map(_._1)), childrenAfterBuyProduct.map(_._2).find(_.isDefined).head)
+    val newChildrenAfterBuyProduct = childrenAfterBuyProduct.map(_._1)
+    val productAfterBuy = childrenAfterBuyProduct.map(_._2).find(_.isDefined)
+    productAfterBuy match {
+      case None => (copy(children = newChildrenAfterBuyProduct), None)
+      case Some(x) => (copy(children = newChildrenAfterBuyProduct), x)
+    }
   }
 
   override def calculateEarningsOfMachine(machineUUID: UUID): Float = children.map(_.calculateEarningsOfMachine(machineUUID)).sum
