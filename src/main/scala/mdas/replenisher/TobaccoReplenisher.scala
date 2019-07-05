@@ -1,8 +1,8 @@
-package mdas.tobaccomachines.replenisher
+package mdas.replenisher
 
 import akka.actor.Actor
+import mdas.messages.NewProductResponse
 import mdas.tobaccomachines.TobaccoProduct
-import mdas.tobaccomachines.messages.NewProductResponse
 
 class TobaccoReplenisher extends Actor {
   override def receive: Receive = {

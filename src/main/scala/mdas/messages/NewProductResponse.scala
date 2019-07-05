@@ -1,4 +1,4 @@
-package mdas.tobaccomachines.messages
+package mdas.messages
 
 import mdas.tobaccomachines.TobaccoProduct
 

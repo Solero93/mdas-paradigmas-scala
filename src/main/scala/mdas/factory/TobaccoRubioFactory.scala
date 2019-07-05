@@ -1,8 +1,8 @@
-package mdas.tobaccomachines.factory
+package mdas.factory
 
 import akka.actor.Actor
+import mdas.messages.{CreateTobaccoRequest, NewProductResponse}
 import mdas.tobaccomachines.TobaccoProduct
-import mdas.tobaccomachines.messages.{CreateTobaccoRequest, NewProductResponse}
 
 class TobaccoRubioFactory extends Actor with TobaccoFactory {
   override def receive: Receive = {

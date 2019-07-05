@@ -1,4 +1,4 @@
-package mdas.tobaccomachines.factory
+package mdas.factory
 
 import mdas.tobaccomachines.TobaccoProduct
 

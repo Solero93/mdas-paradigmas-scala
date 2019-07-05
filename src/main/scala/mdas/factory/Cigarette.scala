@@ -1,3 +1,3 @@
-package mdas.tobaccomachines.factory
+package mdas.factory
 
 case class Cigarette(ingredients: Seq[CigaretteIngredient])

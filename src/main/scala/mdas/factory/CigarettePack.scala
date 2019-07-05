@@ -1,4 +1,5 @@
-package mdas.tobaccomachines.factory
+package mdas.factory
+
 import mdas.tobaccomachines.TobaccoProduct
 
 case class CigarettePack(cigarettes: Seq[Cigarette]) extends FactoryProduct {
